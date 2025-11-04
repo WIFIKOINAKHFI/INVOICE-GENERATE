@@ -131,6 +131,14 @@
             margin-bottom: 20px;
         }
         
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
         @media (max-width: 768px) {
             .card-body {
                 padding: 15px;
@@ -160,27 +168,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#client-section">
+                        <a class="nav-link active menu-link" href="#" data-target="client-section">
                             <i class="fas fa-users"></i> Client
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#product-section">
+                        <a class="nav-link menu-link" href="#" data-target="product-section">
                             <i class="fas fa-box"></i> Produk
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#invoice-section">
+                        <a class="nav-link menu-link" href="#" data-target="invoice-section">
                             <i class="fas fa-file-invoice"></i> Buat Invoice
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#report-section">
+                        <a class="nav-link menu-link" href="#" data-target="report-section">
                             <i class="fas fa-chart-bar"></i> Laporan
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#automation-section">
+                        <a class="nav-link menu-link" href="#" data-target="automation-section">
                             <i class="fas fa-robot"></i> Otomasi
                         </a>
                     </li>
@@ -191,7 +199,7 @@
 
     <div class="container mt-4">
         <!-- Client Section -->
-        <section id="client-section" class="mb-5">
+        <section id="client-section" class="section active">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span><i class="fas fa-users"></i> Manajemen Client</span>
@@ -230,7 +238,7 @@
         </section>
 
         <!-- Product Section -->
-        <section id="product-section" class="mb-5">
+        <section id="product-section" class="section">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span><i class="fas fa-box"></i> Manajemen Produk</span>
@@ -267,7 +275,7 @@
         </section>
 
         <!-- Invoice Section -->
-        <section id="invoice-section" class="mb-5">
+        <section id="invoice-section" class="section">
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-file-invoice"></i> Buat Invoice
@@ -334,10 +342,10 @@
                             <!-- Konten invoice akan dimuat di sini -->
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                            <button type="button" class="btn btn-success me-2" id="send-telegram">
+                            <button type="button" class="btn telegram-btn me-2" id="send-telegram">
                                 <i class="fab fa-telegram"></i> Kirim ke Telegram
                             </button>
-                            <button type="button" class="btn btn-success whatsapp-btn" id="send-whatsapp">
+                            <button type="button" class="btn whatsapp-btn" id="send-whatsapp">
                                 <i class="fab fa-whatsapp"></i> Kirim ke WhatsApp
                             </button>
                         </div>
@@ -347,7 +355,7 @@
         </section>
 
         <!-- Report Section -->
-        <section id="report-section" class="mb-5">
+        <section id="report-section" class="section">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span><i class="fas fa-chart-bar"></i> Laporan</span>
@@ -401,7 +409,7 @@
         </section>
 
         <!-- Automation Section -->
-        <section id="automation-section" class="mb-5">
+        <section id="automation-section" class="section">
             <div class="card">
                 <div class="card-header">
                     <i class="fas fa-robot"></i> Otomasi Pengiriman Invoice
@@ -908,11 +916,38 @@ Terima kasih.`;
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
         
+        // Navigasi menu
+        function showSection(sectionId) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Tampilkan section yang dipilih
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update menu aktif
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelector(`.menu-link[data-target="${sectionId}"]`).classList.add('active');
+        }
+        
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
             renderClients();
             renderProducts();
             renderAutomationLog();
+            
+            // Navigasi menu
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('data-target');
+                    showSection(target);
+                });
+            });
             
             // Cek invoice otomatis setiap kali aplikasi dimuat
             checkAndSendAutoInvoices();
@@ -963,93 +998,440 @@ Terima kasih.`;
                 alert('Pengecekan invoice otomatis selesai. Lihat log untuk detail.');
             });
             
-            // ... (kode event listener lainnya tetap sama seperti sebelumnya)
-            // Untuk menghemat ruang, saya tidak menulis ulang semua event listener yang sama
-            // Anda dapat menyalin dari script sebelumnya
+            // Tambah client
+            document.getElementById('add-client-btn').addEventListener('click', function() {
+                document.getElementById('client-modal-title').textContent = 'Tambah Client';
+                document.getElementById('client-form').reset();
+                document.getElementById('client-id').value = '';
+                new bootstrap.Modal(document.getElementById('client-modal')).show();
+            });
             
-        });
-        
-        // Kode event listener yang sama dari script sebelumnya
-        // Saya akan menyalin bagian pentingnya di sini:
-        
-        // Tambah client
-        document.getElementById('add-client-btn').addEventListener('click', function() {
-            document.getElementById('client-modal-title').textContent = 'Tambah Client';
-            document.getElementById('client-form').reset();
-            document.getElementById('client-id').value = '';
-            new bootstrap.Modal(document.getElementById('client-modal')).show();
-        });
-        
-        // Simpan client
-        document.getElementById('save-client').addEventListener('click', function() {
-            const id = document.getElementById('client-id').value;
-            const name = document.getElementById('client-name').value;
-            const phone = document.getElementById('client-phone').value;
-            const package = document.getElementById('client-package').value;
-            const startDate = document.getElementById('client-start-date').value;
-            
-            if (!name || !phone || !package || !startDate) {
-                alert('Semua field harus diisi!');
-                return;
-            }
-            
-            if (id) {
-                // Edit client
-                const index = clients.findIndex(client => client.id === id);
-                if (index !== -1) {
-                    clients[index] = { ...clients[index], name, phone, package, startDate };
-                }
-            } else {
-                // Tambah client baru
-                clients.push({
-                    id: generateId(),
-                    name,
-                    phone,
-                    package,
-                    startDate,
-                    price: 0 // Harga akan diambil dari produk
-                });
-            }
-            
-            localStorage.setItem('clients', JSON.stringify(clients));
-            renderClients();
-            bootstrap.Modal.getInstance(document.getElementById('client-modal')).hide();
-        });
-        
-        // Edit client
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('edit-client') || e.target.parentElement.classList.contains('edit-client')) {
-                const button = e.target.classList.contains('edit-client') ? e.target : e.target.parentElement;
-                const id = button.getAttribute('data-id');
-                const client = clients.find(c => c.id === id);
+            // Simpan client
+            document.getElementById('save-client').addEventListener('click', function() {
+                const id = document.getElementById('client-id').value;
+                const name = document.getElementById('client-name').value;
+                const phone = document.getElementById('client-phone').value;
+                const package = document.getElementById('client-package').value;
+                const startDate = document.getElementById('client-start-date').value;
                 
-                if (client) {
-                    document.getElementById('client-modal-title').textContent = 'Edit Client';
-                    document.getElementById('client-id').value = client.id;
-                    document.getElementById('client-name').value = client.name;
-                    document.getElementById('client-phone').value = client.phone;
-                    document.getElementById('client-package').value = client.package;
-                    document.getElementById('client-start-date').value = client.startDate;
+                if (!name || !phone || !package || !startDate) {
+                    alert('Semua field harus diisi!');
+                    return;
+                }
+                
+                if (id) {
+                    // Edit client
+                    const index = clients.findIndex(client => client.id === id);
+                    if (index !== -1) {
+                        clients[index] = { ...clients[index], name, phone, package, startDate };
+                    }
+                } else {
+                    // Tambah client baru
+                    clients.push({
+                        id: generateId(),
+                        name,
+                        phone,
+                        package,
+                        startDate,
+                        price: 0 // Harga akan diambil dari produk
+                    });
+                }
+                
+                localStorage.setItem('clients', JSON.stringify(clients));
+                renderClients();
+                bootstrap.Modal.getInstance(document.getElementById('client-modal')).hide();
+            });
+            
+            // Edit client
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('edit-client') || e.target.parentElement.classList.contains('edit-client')) {
+                    const button = e.target.classList.contains('edit-client') ? e.target : e.target.parentElement;
+                    const id = button.getAttribute('data-id');
+                    const client = clients.find(c => c.id === id);
                     
-                    new bootstrap.Modal(document.getElementById('client-modal')).show();
+                    if (client) {
+                        document.getElementById('client-modal-title').textContent = 'Edit Client';
+                        document.getElementById('client-id').value = client.id;
+                        document.getElementById('client-name').value = client.name;
+                        document.getElementById('client-phone').value = client.phone;
+                        document.getElementById('client-package').value = client.package;
+                        document.getElementById('client-start-date').value = client.startDate;
+                        
+                        new bootstrap.Modal(document.getElementById('client-modal')).show();
+                    }
                 }
-            }
-            
-            // Hapus client
-            if (e.target.classList.contains('delete-client') || e.target.parentElement.classList.contains('delete-client')) {
-                const button = e.target.classList.contains('delete-client') ? e.target : e.target.parentElement;
-                const id = button.getAttribute('data-id');
                 
-                if (confirm('Apakah Anda yakin ingin menghapus client ini?')) {
-                    clients = clients.filter(client => client.id !== id);
-                    localStorage.setItem('clients', JSON.stringify(clients));
-                    renderClients();
+                // Hapus client
+                if (e.target.classList.contains('delete-client') || e.target.parentElement.classList.contains('delete-client')) {
+                    const button = e.target.classList.contains('delete-client') ? e.target : e.target.parentElement;
+                    const id = button.getAttribute('data-id');
+                    
+                    if (confirm('Apakah Anda yakin ingin menghapus client ini?')) {
+                        clients = clients.filter(client => client.id !== id);
+                        localStorage.setItem('clients', JSON.stringify(clients));
+                        renderClients();
+                    }
                 }
-            }
+            });
+            
+            // Tambah produk
+            document.getElementById('add-product-btn').addEventListener('click', function() {
+                document.getElementById('product-modal-title').textContent = 'Tambah Produk';
+                document.getElementById('product-form').reset();
+                document.getElementById('product-id').value = '';
+                new bootstrap.Modal(document.getElementById('product-modal')).show();
+            });
+            
+            // Simpan produk
+            document.getElementById('save-product').addEventListener('click', function() {
+                const id = document.getElementById('product-id').value;
+                const name = document.getElementById('product-name').value;
+                const price = parseInt(document.getElementById('product-price').value);
+                
+                if (!name || !price) {
+                    alert('Semua field harus diisi!');
+                    return;
+                }
+                
+                if (id) {
+                    // Edit produk
+                    const index = products.findIndex(product => product.id === id);
+                    if (index !== -1) {
+                        products[index] = { id, name, price };
+                    }
+                } else {
+                    // Tambah produk baru
+                    products.push({
+                        id: generateId(),
+                        name,
+                        price
+                    });
+                }
+                
+                localStorage.setItem('products', JSON.stringify(products));
+                renderProducts();
+                bootstrap.Modal.getInstance(document.getElementById('product-modal')).hide();
+            });
+            
+            // Edit produk
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('edit-product') || e.target.parentElement.classList.contains('edit-product')) {
+                    const button = e.target.classList.contains('edit-product') ? e.target : e.target.parentElement;
+                    const id = button.getAttribute('data-id');
+                    const product = products.find(p => p.id === id);
+                    
+                    if (product) {
+                        document.getElementById('product-modal-title').textContent = 'Edit Produk';
+                        document.getElementById('product-id').value = product.id;
+                        document.getElementById('product-name').value = product.name;
+                        document.getElementById('product-price').value = product.price;
+                        
+                        new bootstrap.Modal(document.getElementById('product-modal')).show();
+                    }
+                }
+                
+                // Hapus produk
+                if (e.target.classList.contains('delete-product') || e.target.parentElement.classList.contains('delete-product')) {
+                    const button = e.target.classList.contains('delete-product') ? e.target : e.target.parentElement;
+                    const id = button.getAttribute('data-id');
+                    
+                    if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+                        products = products.filter(product => product.id !== id);
+                        localStorage.setItem('products', JSON.stringify(products));
+                        renderProducts();
+                    }
+                }
+            });
+            
+            // Backup data client
+            document.getElementById('backup-clients').addEventListener('click', function() {
+                const dataStr = JSON.stringify(clients, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = 'clients_backup.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+            
+            // Restore data client
+            document.getElementById('restore-clients').addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = e => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            clients = data;
+                            localStorage.setItem('clients', JSON.stringify(clients));
+                            renderClients();
+                            alert('Data client berhasil direstore!');
+                        } catch (error) {
+                            alert('File tidak valid!');
+                        }
+                    };
+                    
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            });
+            
+            // Backup data produk
+            document.getElementById('backup-products').addEventListener('click', function() {
+                const dataStr = JSON.stringify(products, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = 'products_backup.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+            
+            // Restore data produk
+            document.getElementById('restore-products').addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = e => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            products = data;
+                            localStorage.setItem('products', JSON.stringify(products));
+                            renderProducts();
+                            alert('Data produk berhasil direstore!');
+                        } catch (error) {
+                            alert('File tidak valid!');
+                        }
+                    };
+                    
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            });
+            
+            // Export laporan
+            document.getElementById('export-report').addEventListener('click', function() {
+                const dataStr = JSON.stringify({
+                    clients: clients,
+                    products: products,
+                    summary: {
+                        totalClients: clients.length,
+                        totalProducts: products.length,
+                        totalRevenue: clients.reduce((sum, client) => sum + client.price, 0),
+                        exportDate: new Date().toISOString()
+                    }
+                }, null, 2);
+                
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                const exportFileDefaultName = `laporan_wifi_koin_akhfi_${new Date().toISOString().split('T')[0]}.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+            
+            // Preview invoice
+            document.getElementById('preview-invoice').addEventListener('click', function() {
+                const clientId = document.getElementById('client-select').value;
+                const productId = document.getElementById('product-select').value;
+                const dueDate = document.getElementById('due-date').value;
+                const period = document.getElementById('period').value;
+                
+                if (!clientId || !productId || !dueDate) {
+                    alert('Harap lengkapi semua field!');
+                    return;
+                }
+                
+                const client = clients.find(c => c.id === clientId);
+                const product = products.find(p => p.id === productId);
+                
+                if (!client || !product) {
+                    alert('Data tidak valid!');
+                    return;
+                }
+                
+                // Hitung total berdasarkan periode
+                const total = product.price * parseInt(period);
+                
+                // Generate konten invoice
+                const invoiceContent = document.getElementById('invoice-content');
+                invoiceContent.innerHTML = `
+                    <p>Halo Bapak/Ibu ${client.name},</p>
+                    <p>WIFI KOIN AKHFI telah mengirimkan tagihan untuk Anda, dengan rincian sebagai berikut:</p>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>Pengirim Invoice</td>
+                            <td>AI WIFI KOIN AKHFI</td>
+                        </tr>
+                        <tr>
+                            <td>Nomor Invoice</td>
+                            <td>${document.getElementById('invoice-number').value}</td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td>${document.getElementById('invoice-date').value}</td>
+                        </tr>
+                        <tr>
+                            <td>Nominal</td>
+                            <td>${formatCurrency(total)}</td>
+                        </tr>
+                        <tr>
+                            <td>Item</td>
+                            <td>${product.name}</td>
+                        </tr>
+                        <tr>
+                            <td>Periode</td>
+                            <td>${period} Bulan</td>
+                        </tr>
+                        <tr>
+                            <td>Jatuh Tempo</td>
+                            <td>${dueDate}</td>
+                        </tr>
+                    </table>
+                    <p>Anda bisa bayar Invoice dengan Transfer ke:<br>
+                    Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.<br>
+                    Atau TopUp DANA ke Nomor : 085934241038 a/n AHYAR ROSIDI.</p>
+                    <p>Jika ada pertanyaan lebih lanjut, silakan menghubungi WIFI KOIN AKHFI di:</p>
+                    <p>Email: akhyar.fitria@gmail.com<br>
+                    No. Telp: 082339113376</p>
+                    <p>Terima kasih.</p>
+                `;
+                
+                // Tampilkan preview
+                document.getElementById('invoice-preview').classList.remove('d-none');
+                
+                // Simpan data invoice untuk dikirim
+                window.currentInvoice = {
+                    client,
+                    product,
+                    period,
+                    total,
+                    invoiceNumber: document.getElementById('invoice-number').value,
+                    invoiceDate: document.getElementById('invoice-date').value,
+                    dueDate
+                };
+            });
+            
+            // Kirim ke Telegram
+            document.getElementById('send-telegram').addEventListener('click', function() {
+                if (!window.currentInvoice) {
+                    alert('Tidak ada invoice untuk dikirim!');
+                    return;
+                }
+                
+                const { client, product, period, total, invoiceNumber, invoiceDate, dueDate } = window.currentInvoice;
+                
+                const message = `Halo Bapak/Ibu ${client.name},
+
+WIFI KOIN AKHFI telah mengirimkan tagihan untuk Anda,
+dengan rincian sebagai berikut:
+
+Pengirim Invoice: AI WIFI KOIN AKHFI
+Nomor Invoice: ${invoiceNumber}
+Tanggal: ${invoiceDate}
+Nominal: ${formatCurrency(total)}
+Item: ${product.name}
+Periode: ${period} Bulan
+Jatuh Tempo: ${dueDate}
+
+Anda bisa bayar Invoice dengan Transfer ke:
+Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.
+Atau TopUp DANA ke Nomor : 085934241038 a/n AHYAR ROSIDI.
+
+Jika ada pertanyaan lebih lanjut, silakan menghubungi WIFI KOIN AKHFI di:
+
+Email: akhyar.fitria@gmail.com
+No. Telp: 082339113376
+
+Terima kasih.`;
+                
+                fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: telegramConfig.chatId,
+                        text: message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert('Invoice berhasil dikirim ke Telegram!');
+                    } else {
+                        alert('Gagal mengirim invoice ke Telegram: ' + data.description);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat mengirim ke Telegram');
+                });
+            });
+            
+            // Kirim ke WhatsApp
+            document.getElementById('send-whatsapp').addEventListener('click', function() {
+                if (!window.currentInvoice) {
+                    alert('Tidak ada invoice untuk dikirim!');
+                    return;
+                }
+                
+                const { client, product, period, total, invoiceNumber, invoiceDate, dueDate } = window.currentInvoice;
+                
+                const message = `Halo Bapak/Ibu ${client.name},
+
+WIFI KOIN AKHFI telah mengirimkan tagihan untuk Anda,
+dengan rincian sebagai berikut:
+
+Pengirim Invoice: AI WIFI KOIN AKHFI
+Nomor Invoice: ${invoiceNumber}
+Tanggal: ${invoiceDate}
+Nominal: ${formatCurrency(total)}
+Item: ${product.name}
+Periode: ${period} Bulan
+Jatuh Tempo: ${dueDate}
+
+Anda bisa bayar Invoice dengan Transfer ke:
+Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.
+Atau TopUp DANA ke Nomor : 085934241038 a/n AHYAR ROSIDI.
+
+Jika ada pertanyaan lebih lanjut, silakan menghubungi WIFI KOIN AKHFI di:
+
+Email: akhyar.fitria@gmail.com
+No. Telp: 082339113376
+
+Terima kasih.`;
+                
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${client.phone}?text=${encodedMessage}`;
+                
+                window.open(whatsappUrl, '_blank');
+                
+                // Update nomor invoice untuk berikutnya
+                invoiceCounter++;
+                localStorage.setItem('invoiceCounter', invoiceCounter.toString());
+                document.getElementById('invoice-number').value = `INV/${new Date().getFullYear()}/${invoiceCounter.toString().padStart(4, '0')}`;
+                
+                alert('Invoice berhasil dikirim ke WhatsApp!');
+            });
         });
-        
-        // ... (dan seterusnya untuk event listener lainnya)
-        
     </script>
 </body>
 </html>
