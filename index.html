@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WIFI KOIN AKHFI - Invoice Management</title>
+    <!-- HAPUS CSP META TAG INI untuk NeoCities -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
@@ -139,6 +140,22 @@
             display: block;
         }
         
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         @media (max-width: 768px) {
             .card-body {
                 padding: 15px;
@@ -152,6 +169,58 @@
                 font-size: 0.8rem;
                 padding: 5px 10px;
             }
+        }
+        
+        .log-error {
+            color: #e74c3c;
+        }
+        
+        .log-success {
+            color: #27ae60;
+        }
+        
+        .log-info {
+            color: #3498db;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .automation-status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .automation-active {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .automation-inactive {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
         }
     </style>
 </head>
@@ -198,6 +267,11 @@
     </nav>
 
     <div class="container mt-4">
+        <!-- Status Otomasi -->
+        <div id="automation-status" class="automation-status d-none">
+            <!-- Status akan ditampilkan di sini -->
+        </div>
+
         <!-- Client Section -->
         <section id="client-section" class="section active">
             <div class="card">
@@ -453,7 +527,7 @@
                                         <input type="number" class="form-control" id="auto-send-days" value="3" min="1" max="30">
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" id="enable-auto-send">
+                                        <input class="form-check-input" type="checkbox" id="enable-auto-send" checked>
                                         <label class="form-check-label" for="enable-auto-send">
                                             Aktifkan Pengiriman Otomatis
                                         </label>
@@ -563,7 +637,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
     <script>
-        // Inisialisasi data dengan data dari gambar
+        // Inisialisasi data
         let clients = JSON.parse(localStorage.getItem('clients')) || [
             { id: '1', name: 'B05.BUYA', phone: '14155626027', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '1', price: 250000 },
             { id: '2', name: 'FIBIAN', phone: '6282339516363', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '1', price: 200000 },
@@ -653,9 +727,85 @@
             return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
         }
         
+        // Parse tanggal dari format "d M Y" ke objek Date
+        function parseDate(dateStr) {
+            const months = {
+                'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'Mei': 4, 'Jun': 5,
+                'Jul': 6, 'Agu': 7, 'Sep': 8, 'Okt': 9, 'Nov': 10, 'Des': 11
+            };
+            
+            const parts = dateStr.split(' ');
+            if (parts.length === 3) {
+                const day = parseInt(parts[0]);
+                const month = months[parts[1]];
+                const year = parseInt(parts[2]);
+                return new Date(year, month, day);
+            }
+            
+            // Fallback untuk format tanggal lama (hanya angka)
+            const day = parseInt(dateStr);
+            if (!isNaN(day)) {
+                const today = new Date();
+                return new Date(today.getFullYear(), today.getMonth(), day);
+            }
+            
+            return new Date(); // Default ke hari ini jika parsing gagal
+        }
+        
         // Format mata uang
         function formatCurrency(amount) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
+        }
+        
+        // Fungsi untuk mengirim pesan ke Telegram menggunakan fetch
+        function sendTelegramMessage(message, onSuccess, onError) {
+            const botToken = telegramConfig.botToken;
+            const chatId = telegramConfig.chatId;
+            
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            const data = {
+                chat_id: chatId,
+                text: message,
+                parse_mode: 'HTML'
+            };
+            
+            // Gunakan fetch dengan error handling
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(response => {
+                if (response.ok) {
+                    onSuccess(response);
+                } else {
+                    onError(response.description || 'Unknown error from Telegram API');
+                }
+            })
+            .catch(error => {
+                onError(error.message || 'Network error occurred');
+            });
+        }
+        
+        // Tampilkan status otomasi
+        function showAutomationStatus(message, type) {
+            const statusElement = document.getElementById('automation-status');
+            statusElement.className = `automation-status automation-${type}`;
+            statusElement.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-${type === 'active' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}</span>
+                    <button type="button" class="btn-close" onclick="this.parentElement.parentElement.classList.add('d-none')"></button>
+                </div>
+            `;
+            statusElement.classList.remove('d-none');
         }
         
         // Render data client
@@ -683,10 +833,7 @@
                 clientsList.appendChild(row);
             });
             
-            // Update dropdown client di form invoice
             updateClientSelect();
-            
-            // Update laporan
             updateReports();
         }
         
@@ -713,10 +860,7 @@
                 productsList.appendChild(row);
             });
             
-            // Update dropdown produk di form invoice
             updateProductSelect();
-            
-            // Update laporan
             updateReports();
         }
         
@@ -751,23 +895,21 @@
             const reportsList = document.getElementById('reports-list');
             reportsList.innerHTML = '';
             
-            // Hitung statistik
             const totalClients = clients.length;
             const totalProducts = products.length;
             const totalRevenue = clients.reduce((sum, client) => sum + client.price, 0);
             const pendingInvoices = clients.filter(client => {
-                const startDate = parseInt(client.startDate);
-                const today = new Date().getDate();
-                return startDate <= today && startDate >= today - 3;
+                const startDate = parseDate(client.startDate);
+                const today = new Date();
+                const daysUntilDue = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
+                return daysUntilDue <= 3 && daysUntilDue >= 0;
             }).length;
             
-            // Update statistik
             document.getElementById('total-clients').textContent = totalClients;
             document.getElementById('total-products').textContent = totalProducts;
             document.getElementById('total-revenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('pending-invoices').textContent = pendingInvoices;
             
-            // Render tabel laporan
             clients.forEach((client, index) => {
                 const row = document.createElement('tr');
                 const status = getInvoiceStatus(client);
@@ -787,14 +929,15 @@
         
         // Tentukan status invoice
         function getInvoiceStatus(client) {
-            const startDate = parseInt(client.startDate);
-            const today = new Date().getDate();
+            const startDate = parseDate(client.startDate);
+            const today = new Date();
+            const daysUntilDue = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
             
-            if (startDate > today) {
+            if (daysUntilDue > 3) {
                 return 'Akan Datang';
-            } else if (startDate === today) {
+            } else if (daysUntilDue === 0) {
                 return 'Jatuh Tempo';
-            } else if (today - startDate <= 3) {
+            } else if (daysUntilDue > 0) {
                 return 'Aktif';
             } else {
                 return 'Terlambat';
@@ -808,10 +951,13 @@
             
             automationLog.slice(-10).reverse().forEach(log => {
                 const row = document.createElement('tr');
+                const statusClass = log.status === 'Error' ? 'status-error' : 
+                                  log.status === 'Berhasil' ? 'status-success' : 'status-info';
+                
                 row.innerHTML = `
                     <td>${log.date}</td>
                     <td>${log.client}</td>
-                    <td>${log.status}</td>
+                    <td><span class="status-badge ${statusClass}">${log.status}</span></td>
                     <td>${log.message}</td>
                 `;
                 logTable.appendChild(row);
@@ -834,45 +980,47 @@
         
         // Cek dan kirim invoice otomatis
         function checkAndSendAutoInvoices() {
-            if (!telegramConfig.enableAutoSend) return;
+            if (!telegramConfig.enableAutoSend) {
+                addAutomationLog('System', 'Info', 'Otomasi tidak aktif');
+                return;
+            }
             
             const today = new Date();
-            const currentDay = today.getDate();
+            const daysBefore = telegramConfig.autoSendDays;
+            let invoicesSent = 0;
             
             clients.forEach(client => {
-                const startDate = parseInt(client.startDate);
-                const daysBefore = telegramConfig.autoSendDays;
+                const startDate = parseDate(client.startDate);
+                const daysUntilDue = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
                 
-                // Jika hari ini adalah (tanggal mulai - daysBefore), kirim invoice
-                if (startDate - daysBefore === currentDay) {
+                if (daysUntilDue === daysBefore) {
                     sendAutoInvoiceToTelegram(client);
+                    invoicesSent++;
                 }
             });
+            
+            if (invoicesSent === 0) {
+                addAutomationLog('System', 'Info', `Tidak ada invoice yang perlu dikirim hari ini (${daysBefore} hari sebelum jatuh tempo)`);
+            }
         }
         
         // Kirim invoice otomatis ke Telegram
         function sendAutoInvoiceToTelegram(client) {
             const invoiceNumber = `INV/${new Date().getFullYear()}/${invoiceCounter.toString().padStart(4, '0')}`;
             const invoiceDate = formatDate(new Date());
+            const dueDate = formatDate(parseDate(client.startDate));
             
-            // Hitung jatuh tempo (tanggal mulai bulan ini atau bulan depan)
-            const today = new Date();
-            const dueDate = new Date(today.getFullYear(), today.getMonth(), parseInt(client.startDate));
-            if (dueDate < today) {
-                dueDate.setMonth(dueDate.getMonth() + 1);
-            }
-            
-            const message = `Halo Bapak/Ibu ${client.name},
+            const message = `<b>Halo Bapak/Ibu ${client.name},</b>
 
 WIFI KOIN AKHFI telah mengirimkan tagihan untuk Anda,
 dengan rincian sebagai berikut:
 
-Pengirim Invoice: AI WIFI KOIN AKHFI
-Nomor Invoice: ${invoiceNumber}
-Tanggal: ${invoiceDate}
-Nominal: ${formatCurrency(client.price)}
-Item: ${client.package}
-Jatuh Tempo: ${formatDate(dueDate)}
+<b>Pengirim Invoice:</b> AI WIFI KOIN AKHFI
+<b>Nomor Invoice:</b> ${invoiceNumber}
+<b>Tanggal:</b> ${invoiceDate}
+<b>Nominal:</b> ${formatCurrency(client.price)}
+<b>Item:</b> ${client.package}
+<b>Jatuh Tempo:</b> ${dueDate}
 
 Anda bisa bayar Invoice dengan Transfer ke:
 Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.
@@ -885,30 +1033,19 @@ No. Telp: 082339113376
 
 Terima kasih.`;
             
-            fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: telegramConfig.chatId,
-                    text: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
+            sendTelegramMessage(
+                message,
+                function(response) {
                     addAutomationLog(client.name, 'Berhasil', `Invoice otomatis dikirim ke Telegram`);
                     invoiceCounter++;
                     localStorage.setItem('invoiceCounter', invoiceCounter.toString());
-                } else {
-                    addAutomationLog(client.name, 'Gagal', `Gagal mengirim ke Telegram: ${data.description}`);
+                    showAutomationStatus(`Invoice berhasil dikirim ke ${client.name}`, 'active');
+                },
+                function(error) {
+                    addAutomationLog(client.name, 'Error', `Gagal mengirim ke Telegram: ${error}`);
+                    showAutomationStatus(`Gagal mengirim invoice ke ${client.name}: ${error}`, 'inactive');
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                addAutomationLog(client.name, 'Error', `Terjadi kesalahan: ${error.message}`);
-            });
+            );
         }
         
         // Generate ID unik
@@ -918,15 +1055,12 @@ Terima kasih.`;
         
         // Navigasi menu
         function showSection(sectionId) {
-            // Sembunyikan semua section
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Tampilkan section yang dipilih
             document.getElementById(sectionId).classList.add('active');
             
-            // Update menu aktif
             document.querySelectorAll('.menu-link').forEach(link => {
                 link.classList.remove('active');
             });
@@ -961,35 +1095,35 @@ Terima kasih.`;
                 
                 localStorage.setItem('telegramConfig', JSON.stringify(telegramConfig));
                 alert('Konfigurasi Telegram berhasil disimpan!');
+                showAutomationStatus('Konfigurasi Telegram berhasil disimpan!', 'active');
             });
             
             // Test koneksi Telegram
             document.getElementById('test-telegram').addEventListener('click', function() {
-                const testMessage = `Test koneksi dari WIFI KOIN AKHFI Invoice System\nTanggal: ${formatDate(new Date())}`;
+                const testMessage = `<b>Test koneksi dari WIFI KOIN AKHFI Invoice System</b>\nTanggal: ${formatDate(new Date())}`;
+                const button = this;
+                const originalText = button.innerHTML;
                 
-                fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: telegramConfig.chatId,
-                        text: testMessage
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
+                button.innerHTML = '<div class="loading"></div>Mengirim...';
+                button.disabled = true;
+                
+                sendTelegramMessage(
+                    testMessage,
+                    function(response) {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
                         alert('Test Telegram berhasil! Pesan telah dikirim.');
                         addAutomationLog('System', 'Berhasil', 'Test koneksi Telegram berhasil');
-                    } else {
-                        alert('Test Telegram gagal: ' + data.description);
+                        showAutomationStatus('Test Telegram berhasil!', 'active');
+                    },
+                    function(error) {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        alert('Test Telegram gagal: ' + error);
+                        addAutomationLog('System', 'Error', `Test koneksi Telegram gagal: ${error}`);
+                        showAutomationStatus(`Test Telegram gagal: ${error}`, 'inactive');
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat test Telegram');
-                });
+                );
             });
             
             // Cek invoice otomatis manual
@@ -1020,20 +1154,18 @@ Terima kasih.`;
                 }
                 
                 if (id) {
-                    // Edit client
                     const index = clients.findIndex(client => client.id === id);
                     if (index !== -1) {
                         clients[index] = { ...clients[index], name, phone, package, startDate };
                     }
                 } else {
-                    // Tambah client baru
                     clients.push({
                         id: generateId(),
                         name,
                         phone,
                         package,
                         startDate,
-                        price: 0 // Harga akan diambil dari produk
+                        price: 0
                     });
                 }
                 
@@ -1061,7 +1193,6 @@ Terima kasih.`;
                     }
                 }
                 
-                // Hapus client
                 if (e.target.classList.contains('delete-client') || e.target.parentElement.classList.contains('delete-client')) {
                     const button = e.target.classList.contains('delete-client') ? e.target : e.target.parentElement;
                     const id = button.getAttribute('data-id');
@@ -1094,13 +1225,11 @@ Terima kasih.`;
                 }
                 
                 if (id) {
-                    // Edit produk
                     const index = products.findIndex(product => product.id === id);
                     if (index !== -1) {
                         products[index] = { id, name, price };
                     }
                 } else {
-                    // Tambah produk baru
                     products.push({
                         id: generateId(),
                         name,
@@ -1130,7 +1259,6 @@ Terima kasih.`;
                     }
                 }
                 
-                // Hapus produk
                 if (e.target.classList.contains('delete-product') || e.target.parentElement.classList.contains('delete-product')) {
                     const button = e.target.classList.contains('delete-product') ? e.target : e.target.parentElement;
                     const id = button.getAttribute('data-id');
@@ -1267,10 +1395,8 @@ Terima kasih.`;
                     return;
                 }
                 
-                // Hitung total berdasarkan periode
                 const total = product.price * parseInt(period);
                 
-                // Generate konten invoice
                 const invoiceContent = document.getElementById('invoice-content');
                 invoiceContent.innerHTML = `
                     <p>Halo Bapak/Ibu ${client.name},</p>
@@ -1314,10 +1440,8 @@ Terima kasih.`;
                     <p>Terima kasih.</p>
                 `;
                 
-                // Tampilkan preview
                 document.getElementById('invoice-preview').classList.remove('d-none');
                 
-                // Simpan data invoice untuk dikirim
                 window.currentInvoice = {
                     client,
                     product,
@@ -1337,19 +1461,24 @@ Terima kasih.`;
                 }
                 
                 const { client, product, period, total, invoiceNumber, invoiceDate, dueDate } = window.currentInvoice;
+                const button = this;
+                const originalText = button.innerHTML;
                 
-                const message = `Halo Bapak/Ibu ${client.name},
+                button.innerHTML = '<div class="loading"></div>Mengirim...';
+                button.disabled = true;
+                
+                const message = `<b>Halo Bapak/Ibu ${client.name},</b>
 
 WIFI KOIN AKHFI telah mengirimkan tagihan untuk Anda,
 dengan rincian sebagai berikut:
 
-Pengirim Invoice: AI WIFI KOIN AKHFI
-Nomor Invoice: ${invoiceNumber}
-Tanggal: ${invoiceDate}
-Nominal: ${formatCurrency(total)}
-Item: ${product.name}
-Periode: ${period} Bulan
-Jatuh Tempo: ${dueDate}
+<b>Pengirim Invoice:</b> AI WIFI KOIN AKHFI
+<b>Nomor Invoice:</b> ${invoiceNumber}
+<b>Tanggal:</b> ${invoiceDate}
+<b>Nominal:</b> ${formatCurrency(total)}
+<b>Item:</b> ${product.name}
+<b>Periode:</b> ${period} Bulan
+<b>Jatuh Tempo:</b> ${dueDate}
 
 Anda bisa bayar Invoice dengan Transfer ke:
 Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.
@@ -1362,28 +1491,23 @@ No. Telp: 082339113376
 
 Terima kasih.`;
                 
-                fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: telegramConfig.chatId,
-                        text: message
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
+                sendTelegramMessage(
+                    message,
+                    function(response) {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
                         alert('Invoice berhasil dikirim ke Telegram!');
-                    } else {
-                        alert('Gagal mengirim invoice ke Telegram: ' + data.description);
+                        addAutomationLog(client.name, 'Berhasil', 'Invoice manual dikirim ke Telegram');
+                        showAutomationStatus('Invoice berhasil dikirim ke Telegram!', 'active');
+                    },
+                    function(error) {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        alert('Gagal mengirim invoice ke Telegram: ' + error);
+                        addAutomationLog(client.name, 'Error', `Gagal mengirim invoice manual: ${error}`);
+                        showAutomationStatus(`Gagal mengirim invoice: ${error}`, 'inactive');
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat mengirim ke Telegram');
-                });
+                );
             });
             
             // Kirim ke WhatsApp
@@ -1424,7 +1548,6 @@ Terima kasih.`;
                 
                 window.open(whatsappUrl, '_blank');
                 
-                // Update nomor invoice untuk berikutnya
                 invoiceCounter++;
                 localStorage.setItem('invoiceCounter', invoiceCounter.toString());
                 document.getElementById('invoice-number').value = `INV/${new Date().getFullYear()}/${invoiceCounter.toString().padStart(4, '0')}`;
