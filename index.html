@@ -3,141 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIFI KOIN AKHFI - Invoice Management</title>
-    <!-- HAPUS CSP META TAG INI untuk NeoCities -->
+    <title>WIFI KOIN AKHFI - Invoice Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
             --accent-color: #e74c3c;
             --light-color: #ecf0f1;
             --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
         }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
+            min-height: 100vh;
         }
         
         .navbar-brand {
             font-weight: bold;
-            color: var(--primary-color) !important;
+            color: white !important;
+            font-size: 1.5rem;
         }
         
         .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
             border: none;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
         }
         
         .card-header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            border-radius: 10px 10px 0 0 !important;
+            border-radius: 0 !important;
             font-weight: bold;
+            padding: 15px 20px;
+            border-bottom: none;
         }
         
         .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
         }
         
         .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
         }
         
         .btn-success {
-            background-color: #27ae60;
-            border-color: #27ae60;
+            background: linear-gradient(135deg, var(--success-color), #219653);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
         }
         
         .btn-danger {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
+            background: linear-gradient(135deg, var(--accent-color), #c0392b);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
         }
         
         .table-responsive {
             border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
         
         .table th {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #34495e);
             color: white;
+            font-weight: 600;
+            border: none;
+            padding: 12px 15px;
+        }
+        
+        .table td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            border-color: #f1f1f1;
+        }
+        
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(236, 240, 241, 0.5);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
         }
         
         .nav-tabs .nav-link.active {
             background-color: var(--primary-color);
             color: white;
             border: none;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
         }
         
         .nav-tabs .nav-link {
             color: var(--dark-color);
+            border-radius: 8px 8px 0 0;
+            font-weight: 500;
         }
         
         .invoice-preview {
             background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1e5e9;
         }
         
         .invoice-header {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .invoice-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .invoice-details {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
             margin-bottom: 20px;
         }
         
         .whatsapp-btn {
-            background-color: #25D366;
-            border-color: #25D366;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border: none;
             color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
         }
         
         .whatsapp-btn:hover {
-            background-color: #128C7E;
-            border-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
             color: white;
         }
         
         .telegram-btn {
-            background-color: #0088cc;
-            border-color: #0088cc;
+            background: linear-gradient(135deg, #0088cc, #006699);
+            border: none;
             color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
         }
         
         .telegram-btn:hover {
-            background-color: #006699;
-            border-color: #006699;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 136, 204, 0.3);
             color: white;
         }
         
         .action-buttons .btn {
             margin-right: 5px;
             margin-bottom: 5px;
+            border-radius: 6px;
         }
         
         .report-summary {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .summary-item h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .summary-item p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
         }
         
         .section {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
         
         .section.active {
             display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .loading {
@@ -145,7 +251,7 @@
             width: 20px;
             height: 20px;
             border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
+            border-top: 3px solid var(--secondary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-right: 10px;
@@ -169,68 +275,167 @@
                 font-size: 0.8rem;
                 padding: 5px 10px;
             }
+            
+            .summary-item h3 {
+                font-size: 1.8rem;
+            }
         }
         
         .log-error {
-            color: #e74c3c;
+            color: var(--accent-color);
         }
         
         .log-success {
-            color: #27ae60;
+            color: var(--success-color);
         }
         
         .log-info {
-            color: #3498db;
+            color: var(--secondary-color);
         }
         
         .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 0.8rem;
             font-weight: bold;
         }
         
         .status-success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: rgba(39, 174, 96, 0.15);
+            color: var(--success-color);
         }
         
         .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: rgba(231, 76, 60, 0.15);
+            color: var(--accent-color);
         }
         
         .status-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
+            background-color: rgba(52, 152, 219, 0.15);
+            color: var(--secondary-color);
         }
         
         .automation-status {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
         
         .automation-active {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            color: var(--success-color);
         }
         
         .automation-inactive {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: var(--accent-color);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #e1e5e9;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px 12px 0 0;
+            border-bottom: none;
+            padding: 20px;
+        }
+        
+        .modal-title {
+            font-weight: 600;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #e1e5e9;
+            padding: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .page-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 15px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #dee2e6;
+        }
+        
+        .client-status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-active {
+            background-color: var(--success-color);
+        }
+        
+        .status-pending {
+            background-color: var(--warning-color);
+        }
+        
+        .status-expired {
+            background-color: var(--accent-color);
+        }
+        
+        .badge-premium {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-wifi"></i> WIFI KOIN AKHFI
-            </a>
+            <div class="logo-container">
+                <i class="fas fa-wifi logo-icon"></i>
+                <a class="navbar-brand" href="#">
+                    WIFI KOIN AKHFI
+                </a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -238,27 +443,27 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link active menu-link" href="#" data-target="client-section">
-                            <i class="fas fa-users"></i> Client
+                            <i class="fas fa-users me-1"></i> Client
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="product-section">
-                            <i class="fas fa-box"></i> Produk
+                            <i class="fas fa-box me-1"></i> Produk
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="invoice-section">
-                            <i class="fas fa-file-invoice"></i> Buat Invoice
+                            <i class="fas fa-file-invoice me-1"></i> Buat Invoice
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="report-section">
-                            <i class="fas fa-chart-bar"></i> Laporan
+                            <i class="fas fa-chart-bar me-1"></i> Laporan
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="automation-section">
-                            <i class="fas fa-robot"></i> Otomasi
+                            <i class="fas fa-robot me-1"></i> Otomasi
                         </a>
                     </li>
                 </ul>
@@ -266,7 +471,7 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container mt-4 mb-5">
         <!-- Status Otomasi -->
         <div id="automation-status" class="automation-status d-none">
             <!-- Status akan ditampilkan di sini -->
@@ -274,9 +479,10 @@
 
         <!-- Client Section -->
         <section id="client-section" class="section active">
+            <h2 class="page-title"><i class="fas fa-users me-2"></i>Manajemen Client</h2>
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-users"></i> Manajemen Client</span>
+                    <span>Daftar Client</span>
                     <div>
                         <button class="btn btn-sm btn-light me-2" id="backup-clients">
                             <i class="fas fa-download"></i> Backup
@@ -299,6 +505,7 @@
                                     <th>Nomor WhatsApp</th>
                                     <th>Tanggal Mulai</th>
                                     <th>Paket</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -313,9 +520,10 @@
 
         <!-- Product Section -->
         <section id="product-section" class="section">
+            <h2 class="page-title"><i class="fas fa-box me-2"></i>Manajemen Produk</h2>
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-box"></i> Manajemen Produk</span>
+                    <span>Daftar Produk</span>
                     <div>
                         <button class="btn btn-sm btn-light me-2" id="backup-products">
                             <i class="fas fa-download"></i> Backup
@@ -350,9 +558,10 @@
 
         <!-- Invoice Section -->
         <section id="invoice-section" class="section">
+            <h2 class="page-title"><i class="fas fa-file-invoice me-2"></i>Buat Invoice</h2>
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-file-invoice"></i> Buat Invoice
+                    Formulir Pembuatan Invoice
                 </div>
                 <div class="card-body">
                     <form id="invoice-form">
@@ -374,7 +583,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="period" class="form-label">Periode (bulan)</label>
-                                <select class="form-control" id="period">
+                                <select class="form-select" id="period">
                                     <option value="1">1 Bulan</option>
                                     <option value="2">2 Bulan</option>
                                     <option value="3">3 Bulan</option>
@@ -388,13 +597,13 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="client-select" class="form-label">Pilih Client</label>
-                                <select class="form-control" id="client-select">
+                                <select class="form-select" id="client-select">
                                     <option value="">-- Pilih Client --</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="product-select" class="form-label">Pilih Produk</label>
-                                <select class="form-control" id="product-select">
+                                <select class="form-select" id="product-select">
                                     <option value="">-- Pilih Produk --</option>
                                 </select>
                             </div>
@@ -402,7 +611,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="button" class="btn btn-primary" id="preview-invoice">
-                                <i class="fas fa-eye"></i> Preview Invoice
+                                <i class="fas fa-eye me-2"></i> Preview Invoice
                             </button>
                         </div>
                     </form>
@@ -410,17 +619,20 @@
                     <!-- Invoice Preview -->
                     <div class="invoice-preview mt-4 d-none" id="invoice-preview">
                         <div class="invoice-header">
-                            <h4>Preview Invoice</h4>
+                            <h4 class="invoice-title">Preview Invoice</h4>
+                            <div class="invoice-number-badge">
+                                <span class="badge bg-primary fs-6" id="preview-invoice-number">INV/2023/0001</span>
+                            </div>
                         </div>
                         <div id="invoice-content">
                             <!-- Konten invoice akan dimuat di sini -->
                         </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                             <button type="button" class="btn telegram-btn me-2" id="send-telegram">
-                                <i class="fab fa-telegram"></i> Kirim ke Telegram
+                                <i class="fab fa-telegram me-2"></i> Kirim ke Telegram
                             </button>
                             <button type="button" class="btn whatsapp-btn" id="send-whatsapp">
-                                <i class="fab fa-whatsapp"></i> Kirim ke WhatsApp
+                                <i class="fab fa-whatsapp me-2"></i> Kirim ke WhatsApp
                             </button>
                         </div>
                     </div>
@@ -430,12 +642,13 @@
 
         <!-- Report Section -->
         <section id="report-section" class="section">
+            <h2 class="page-title"><i class="fas fa-chart-bar me-2"></i>Laporan & Analitik</h2>
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-chart-bar"></i> Laporan</span>
+                    <span>Ringkasan Laporan</span>
                     <div>
                         <button class="btn btn-sm btn-light" id="export-report">
-                            <i class="fas fa-file-export"></i> Export Laporan
+                            <i class="fas fa-file-export me-2"></i> Export Laporan
                         </button>
                     </div>
                 </div>
@@ -443,20 +656,28 @@
                     <div class="report-summary">
                         <div class="row text-center">
                             <div class="col-md-3">
-                                <h3 id="total-clients">0</h3>
-                                <p>Total Client</p>
+                                <div class="summary-item">
+                                    <h3 id="total-clients">0</h3>
+                                    <p>Total Client</p>
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <h3 id="total-products">0</h3>
-                                <p>Total Produk</p>
+                                <div class="summary-item">
+                                    <h3 id="total-products">0</h3>
+                                    <p>Total Produk</p>
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <h3 id="total-revenue">Rp 0</h3>
-                                <p>Pendapatan Bulan Ini</p>
+                                <div class="summary-item">
+                                    <h3 id="total-revenue">Rp 0</h3>
+                                    <p>Pendapatan Bulan Ini</p>
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <h3 id="pending-invoices">0</h3>
-                                <p>Invoice Tertunda</p>
+                                <div class="summary-item">
+                                    <h3 id="pending-invoices">0</h3>
+                                    <p>Invoice Tertunda</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -469,6 +690,7 @@
                                     <th>Nama Client</th>
                                     <th>Paket</th>
                                     <th>Tanggal Mulai</th>
+                                    <th>Jatuh Tempo</th>
                                     <th>Harga</th>
                                     <th>Status</th>
                                 </tr>
@@ -484,21 +706,22 @@
 
         <!-- Automation Section -->
         <section id="automation-section" class="section">
+            <h2 class="page-title"><i class="fas fa-robot me-2"></i>Otomasi Pengiriman Invoice</h2>
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-robot"></i> Otomasi Pengiriman Invoice
+                    Konfigurasi Otomasi
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
-                        <h5><i class="fas fa-info-circle"></i> Informasi Otomasi</h5>
-                        <p>Sistem akan secara otomatis mengirimkan invoice ke Telegram Anda berdasarkan tanggal mulai berlangganan pelanggan. Invoice akan dikirim 3 hari sebelum jatuh tempo.</p>
+                        <h5><i class="fas fa-info-circle me-2"></i>Informasi Otomasi</h5>
+                        <p class="mb-0">Sistem akan secara otomatis mengirimkan invoice ke Telegram Anda berdasarkan tanggal mulai berlangganan pelanggan. Invoice akan dikirim sesuai dengan jumlah hari yang ditentukan sebelum jatuh tempo.</p>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card">
+                            <div class="card h-100">
                                 <div class="card-header bg-success text-white">
-                                    <i class="fas fa-cog"></i> Konfigurasi Telegram
+                                    <i class="fas fa-cog me-2"></i> Konfigurasi Telegram
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
@@ -509,42 +732,44 @@
                                         <label for="telegram-chat-id" class="form-label">Chat ID Telegram</label>
                                         <input type="text" class="form-control" id="telegram-chat-id" value="617429698">
                                     </div>
-                                    <button class="btn btn-success" id="save-telegram-config">
-                                        <i class="fas fa-save"></i> Simpan Konfigurasi
+                                    <button class="btn btn-success w-100" id="save-telegram-config">
+                                        <i class="fas fa-save me-2"></i> Simpan Konfigurasi
                                     </button>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="col-md-6">
-                            <div class="card">
+                            <div class="card h-100">
                                 <div class="card-header bg-primary text-white">
-                                    <i class="fas fa-play-circle"></i> Kontrol Otomasi
+                                    <i class="fas fa-play-circle me-2"></i> Kontrol Otomasi
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
                                         <label for="auto-send-days" class="form-label">Kirim Otomatis (hari sebelum jatuh tempo)</label>
                                         <input type="number" class="form-control" id="auto-send-days" value="3" min="1" max="30">
                                     </div>
-                                    <div class="form-check mb-3">
+                                    <div class="form-check form-switch mb-3">
                                         <input class="form-check-input" type="checkbox" id="enable-auto-send" checked>
                                         <label class="form-check-label" for="enable-auto-send">
                                             Aktifkan Pengiriman Otomatis
                                         </label>
                                     </div>
-                                    <button class="btn btn-primary me-2" id="test-telegram">
-                                        <i class="fab fa-telegram"></i> Test Telegram
-                                    </button>
-                                    <button class="btn btn-info" id="check-auto-invoices">
-                                        <i class="fas fa-sync"></i> Cek Invoice Otomatis
-                                    </button>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary me-2" id="test-telegram">
+                                            <i class="fab fa-telegram me-2"></i> Test Telegram
+                                        </button>
+                                        <button class="btn btn-info" id="check-auto-invoices">
+                                            <i class="fas fa-sync me-2"></i> Cek Invoice Otomatis
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mt-4">
-                        <h5>Log Aktivitas Otomasi</h5>
+                        <h5><i class="fas fa-history me-2"></i>Log Aktivitas Otomasi</h5>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped">
                                 <thead>
@@ -587,7 +812,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="client-package" class="form-label">Paket</label>
-                            <input type="text" class="form-control" id="client-package" required>
+                            <select class="form-select" id="client-package" required>
+                                <option value="">-- Pilih Paket --</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="client-start-date" class="form-label">Tanggal Mulai Berlangganan</label>
@@ -639,44 +866,11 @@
     <script>
         // Inisialisasi data
         let clients = JSON.parse(localStorage.getItem('clients')) || [
-            { id: '1', name: 'B05.BUYA', phone: '14155626027', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '1', price: 250000 },
-            { id: '2', name: 'FIBIAN', phone: '6282339516363', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '1', price: 200000 },
-            { id: '3', name: 'ZAHRULLAH', phone: '62876575002', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '1', price: 50000 },
-            { id: '4', name: 'WARAZ MUYADI', phone: '628774314002', package: 'PAKET INTERNET 30 HARI 2 USER', startDate: '1', price: 50000 },
-            { id: '5', name: 'MAMAK AHAW', phone: '628776150022', package: 'PAKET INTERNET 30 HARI 4 USER', startDate: '6', price: 160000 },
-            { id: '6', name: 'RAHMAN', phone: '6287860001011', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '7', name: 'IBU TARI', phone: '628199888337', package: 'PAKET INTERNET 30 HARI 4 USER', startDate: '28', price: 150000 },
-            { id: '8', name: 'TAINTE LIVIA', phone: '628785527778', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '26', price: 100000 },
-            { id: '9', name: 'BAYAN', phone: '6287852484249', package: 'PAKET INTERNET 30 HARI 2 USER', startDate: '13', price: 75000 },
-            { id: '10', name: 'PAK TEMON', phone: '6287884423564', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '11', price: 100000 },
-            { id: '11', name: 'MAMAK ALYA', phone: '628180521220', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '28', price: 135000 },
-            { id: '12', name: 'KUNYOU', phone: '6285934518227', package: 'PAKET INTERNET 30 HARI 2 USER', startDate: '1', price: 100000 },
-            { id: '13', name: 'PAK ISKANDAR', phone: '628180400080', package: 'PAKET INTERNET 30 HARI UNLIMITED', startDate: '19', price: 135000 },
-            { id: '14', name: 'PAK SAM', phone: '6285237186011', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '15', name: 'GIL', phone: '628783544291', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '16', name: 'KK SENAH', phone: '628775988972', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '17', name: 'MOMME MAHSUN', phone: '6281956765174', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '18', name: 'MIN', phone: '6287864372057', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '6', price: 100000 },
-            { id: '19', name: 'KK ASIM', phone: '6281907484688', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '23', price: 100000 },
-            { id: '20', name: 'NUN', phone: '6287805081118', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '10', price: 100000 },
-            { id: '21', name: 'KK TUAN IDA', phone: '6281750746030', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '22', name: 'YAHI', phone: '6285829048493', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '23', name: 'HUMAN AR', phone: '6287817277958', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '24', name: 'HLADI', phone: '6287700515979', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '14', price: 100000 },
-            { id: '25', name: 'WAJINAN (ABIF)', phone: '6287760062061', package: 'PAKET INTERNET 30 HARI 2 USER', startDate: '21', price: 100000 },
-            { id: '26', name: 'LOINK', phone: '6281909027844', package: 'PAKET INTERNET 30 HARI 2 USER', startDate: '23', price: 100000 },
-            { id: '27', name: 'BUJP', phone: '6287861464872', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '23', price: 50000 },
-            { id: '28', name: 'RAMA & KENS', phone: '6281907011586', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '3', price: 155000 },
-            { id: '29', name: 'BAHTIBA', phone: '628067163563', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '30', name: 'ZIA (SOVIA)', phone: '6287793073404', package: 'PAKET INTERNET 30 HARI UNLIMITED', startDate: '1', price: 250000 },
-            { id: '31', name: 'SAF', phone: '', package: 'PAKET INTERNET 30 HARI UNLIMITED', startDate: '1', price: 250000 },
-            { id: '32', name: 'ZAINAL ARIFIN', phone: '', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '1', price: 100000 },
-            { id: '33', name: 'ADILA PUTRI (MUK)', phone: '6281947392405', package: 'PAKET INTERNET 30 HARI 4 USER', startDate: '7', price: 135000 },
-            { id: '34', name: 'AZWAS (SURI)', phone: '6282340734003', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '11', price: 100000 },
-            { id: '35', name: 'MAFIM', phone: '62855594796226', package: 'PAKET INTERNET 30 HARI 1 USER', startDate: '11', price: 50000 },
-            { id: '36', name: 'FADILA', phone: '6287759884088', package: 'PAKET INTERNET 30 HARI 3 USER', startDate: '11', price: 200000 },
-            { id: '37', name: 'DILLANA', phone: '', package: 'PAKET INTERNET 30 HARI 1 USER', startDate: '12', price: 50000 },
-            { id: '38', name: 'MULI & ABANG', phone: '', package: 'PAKET INTERNET 30 HARI 2 USER', startDate: '12', price: 70000 }
+            { id: '1', name: 'B05.BUYA', phone: '14155626027', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '1 Jan 2024', price: 250000 },
+            { id: '2', name: 'FIBIAN', phone: '6282339516363', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '5 Jan 2024', price: 200000 },
+            { id: '3', name: 'ZAHRULLAH', phone: '62876575002', package: 'PAKET INTERNET 30 HARI 8 USER', startDate: '10 Jan 2024', price: 50000 },
+            { id: '4', name: 'WARAZ MUYADI', phone: '628774314002', package: 'PAKET INTERNET 30 HARI 2 USER', startDate: '15 Jan 2024', price: 50000 },
+            { id: '5', name: 'MAMAK AHAW', phone: '628776150022', package: 'PAKET INTERNET 30 HARI 4 USER', startDate: '20 Jan 2024', price: 160000 }
         ];
         
         let products = JSON.parse(localStorage.getItem('products')) || [
@@ -699,12 +893,12 @@
         
         // Inisialisasi Flatpickr
         flatpickr.localize(flatpickr.l10ns.id);
-        flatpickr("#due-date", {
+        const dueDatePicker = flatpickr("#due-date", {
             dateFormat: "d M Y",
             minDate: "today"
         });
         
-        flatpickr("#client-start-date", {
+        const clientStartDatePicker = flatpickr("#client-start-date", {
             dateFormat: "d M Y",
             defaultDate: "today"
         });
@@ -801,7 +995,7 @@
             statusElement.className = `automation-status automation-${type}`;
             statusElement.innerHTML = `
                 <div class="d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-${type === 'active' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}</span>
+                    <span><i class="fas fa-${type === 'active' ? 'check-circle' : 'exclamation-triangle'} me-2"></i> ${message}</span>
                     <button type="button" class="btn-close" onclick="this.parentElement.parentElement.classList.add('d-none')"></button>
                 </div>
             `;
@@ -813,19 +1007,50 @@
             const clientsList = document.getElementById('clients-list');
             clientsList.innerHTML = '';
             
+            if (clients.length === 0) {
+                clientsList.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <div class="empty-state">
+                                <i class="fas fa-users"></i>
+                                <h5>Belum ada client</h5>
+                                <p>Tambahkan client pertama Anda untuk memulai</p>
+                                <button class="btn btn-primary" id="add-first-client">
+                                    <i class="fas fa-plus me-2"></i>Tambah Client
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('add-first-client').addEventListener('click', function() {
+                    document.getElementById('add-client-btn').click();
+                });
+                return;
+            }
+            
             clients.forEach((client, index) => {
+                const status = getClientStatus(client);
+                const statusClass = status === 'Aktif' ? 'status-active' : 
+                                  status === 'Akan Jatuh Tempo' ? 'status-pending' : 'status-expired';
+                const statusText = status === 'Aktif' ? 'Aktif' : 
+                                 status === 'Akan Jatuh Tempo' ? 'Akan Jatuh Tempo' : 'Kadaluarsa';
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${client.name}</td>
+                    <td>
+                        <span class="client-status ${statusClass}"></span>
+                        ${client.name}
+                    </td>
                     <td>${client.phone}</td>
                     <td>${client.startDate}</td>
                     <td>${client.package}</td>
+                    <td><span class="badge ${status === 'Aktif' ? 'bg-success' : status === 'Akan Jatuh Tempo' ? 'bg-warning' : 'bg-danger'}">${statusText}</span></td>
                     <td class="action-buttons">
-                        <button class="btn btn-sm btn-warning edit-client" data-id="${client.id}">
+                        <button class="btn btn-sm btn-warning edit-client" data-id="${client.id}" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger delete-client" data-id="${client.id}">
+                        <button class="btn btn-sm btn-danger delete-client" data-id="${client.id}" title="Hapus">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -834,6 +1059,7 @@
             });
             
             updateClientSelect();
+            updatePackageSelect();
             updateReports();
         }
         
@@ -842,6 +1068,27 @@
             const productsList = document.getElementById('products-list');
             productsList.innerHTML = '';
             
+            if (products.length === 0) {
+                productsList.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <div class="empty-state">
+                                <i class="fas fa-box"></i>
+                                <h5>Belum ada produk</h5>
+                                <p>Tambahkan produk pertama Anda untuk memulai</p>
+                                <button class="btn btn-primary" id="add-first-product">
+                                    <i class="fas fa-plus me-2"></i>Tambah Produk
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('add-first-product').addEventListener('click', function() {
+                    document.getElementById('add-product-btn').click();
+                });
+                return;
+            }
+            
             products.forEach((product, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -849,10 +1096,10 @@
                     <td>${product.name}</td>
                     <td>${formatCurrency(product.price)}</td>
                     <td class="action-buttons">
-                        <button class="btn btn-sm btn-warning edit-product" data-id="${product.id}">
+                        <button class="btn btn-sm btn-warning edit-product" data-id="${product.id}" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
+                        <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}" title="Hapus">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -872,7 +1119,7 @@
             clients.forEach(client => {
                 const option = document.createElement('option');
                 option.value = client.id;
-                option.textContent = client.name;
+                option.textContent = `${client.name} - ${client.package}`;
                 clientSelect.appendChild(option);
             });
         }
@@ -890,6 +1137,19 @@
             });
         }
         
+        // Update dropdown paket di modal client
+        function updatePackageSelect() {
+            const packageSelect = document.getElementById('client-package');
+            packageSelect.innerHTML = '<option value="">-- Pilih Paket --</option>';
+            
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.name;
+                option.textContent = `${product.name} - ${formatCurrency(product.price)}`;
+                packageSelect.appendChild(option);
+            });
+        }
+        
         // Update laporan
         function updateReports() {
             const reportsList = document.getElementById('reports-list');
@@ -897,12 +1157,24 @@
             
             const totalClients = clients.length;
             const totalProducts = products.length;
-            const totalRevenue = clients.reduce((sum, client) => sum + client.price, 0);
+            
+            // Hitung pendapatan bulan ini
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const totalRevenue = clients.reduce((sum, client) => {
+                const startDate = parseDate(client.startDate);
+                if (startDate.getMonth() === currentMonth && startDate.getFullYear() === currentYear) {
+                    return sum + client.price;
+                }
+                return sum;
+            }, 0);
+            
+            // Hitung invoice tertunda (akan jatuh tempo dalam 7 hari)
             const pendingInvoices = clients.filter(client => {
                 const startDate = parseDate(client.startDate);
                 const today = new Date();
                 const daysUntilDue = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
-                return daysUntilDue <= 3 && daysUntilDue >= 0;
+                return daysUntilDue <= 7 && daysUntilDue >= 0;
             }).length;
             
             document.getElementById('total-clients').textContent = totalClients;
@@ -911,20 +1183,41 @@
             document.getElementById('pending-invoices').textContent = pendingInvoices;
             
             clients.forEach((client, index) => {
-                const row = document.createElement('tr');
-                const status = getInvoiceStatus(client);
-                const statusClass = status === 'Aktif' ? 'text-success' : status === 'Jatuh Tempo' ? 'text-danger' : 'text-warning';
+                const startDate = parseDate(client.startDate);
+                const dueDate = new Date(startDate);
+                dueDate.setMonth(dueDate.getMonth() + 1); // Tambah 1 bulan untuk jatuh tempo
                 
+                const status = getInvoiceStatus(client);
+                const statusClass = status === 'Aktif' ? 'text-success' : 
+                                  status === 'Akan Jatuh Tempo' ? 'text-warning' : 'text-danger';
+                
+                const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${client.name}</td>
                     <td>${client.package}</td>
                     <td>${client.startDate}</td>
+                    <td>${formatDate(dueDate)}</td>
                     <td>${formatCurrency(client.price)}</td>
-                    <td class="${statusClass}">${status}</td>
+                    <td class="${statusClass} fw-bold">${status}</td>
                 `;
                 reportsList.appendChild(row);
             });
+        }
+        
+        // Tentukan status client
+        function getClientStatus(client) {
+            const startDate = parseDate(client.startDate);
+            const today = new Date();
+            const daysUntilDue = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
+            
+            if (daysUntilDue > 7) {
+                return 'Aktif';
+            } else if (daysUntilDue > 0) {
+                return 'Akan Jatuh Tempo';
+            } else {
+                return 'Kadaluarsa';
+            }
         }
         
         // Tentukan status invoice
@@ -933,12 +1226,10 @@
             const today = new Date();
             const daysUntilDue = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
             
-            if (daysUntilDue > 3) {
-                return 'Akan Datang';
-            } else if (daysUntilDue === 0) {
-                return 'Jatuh Tempo';
-            } else if (daysUntilDue > 0) {
+            if (daysUntilDue > 7) {
                 return 'Aktif';
+            } else if (daysUntilDue > 0) {
+                return 'Akan Jatuh Tempo';
             } else {
                 return 'Terlambat';
             }
@@ -948,6 +1239,17 @@
         function renderAutomationLog() {
             const logTable = document.getElementById('automation-log');
             logTable.innerHTML = '';
+            
+            if (automationLog.length === 0) {
+                logTable.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-3">
+                            <i>Belum ada aktivitas otomasi</i>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
             
             automationLog.slice(-10).reverse().forEach(log => {
                 const row = document.createElement('tr');
@@ -967,7 +1269,7 @@
         // Tambah log otomasi
         function addAutomationLog(client, status, message) {
             const logEntry = {
-                date: formatDate(new Date()),
+                date: new Date().toLocaleString('id-ID'),
                 client,
                 status,
                 message
@@ -991,7 +1293,10 @@
             
             clients.forEach(client => {
                 const startDate = parseDate(client.startDate);
-                const daysUntilDue = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
+                const dueDate = new Date(startDate);
+                dueDate.setMonth(dueDate.getMonth() + 1); // Jatuh tempo adalah 1 bulan setelah tanggal mulai
+                
+                const daysUntilDue = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
                 
                 if (daysUntilDue === daysBefore) {
                     sendAutoInvoiceToTelegram(client);
@@ -1001,6 +1306,8 @@
             
             if (invoicesSent === 0) {
                 addAutomationLog('System', 'Info', `Tidak ada invoice yang perlu dikirim hari ini (${daysBefore} hari sebelum jatuh tempo)`);
+            } else {
+                addAutomationLog('System', 'Berhasil', `${invoicesSent} invoice berhasil dikirim otomatis`);
             }
         }
         
@@ -1008,7 +1315,9 @@
         function sendAutoInvoiceToTelegram(client) {
             const invoiceNumber = `INV/${new Date().getFullYear()}/${invoiceCounter.toString().padStart(4, '0')}`;
             const invoiceDate = formatDate(new Date());
-            const dueDate = formatDate(parseDate(client.startDate));
+            const startDate = parseDate(client.startDate);
+            const dueDate = new Date(startDate);
+            dueDate.setMonth(dueDate.getMonth() + 1);
             
             const message = `<b>Halo Bapak/Ibu ${client.name},</b>
 
@@ -1020,7 +1329,7 @@ dengan rincian sebagai berikut:
 <b>Tanggal:</b> ${invoiceDate}
 <b>Nominal:</b> ${formatCurrency(client.price)}
 <b>Item:</b> ${client.package}
-<b>Jatuh Tempo:</b> ${dueDate}
+<b>Jatuh Tempo:</b> ${formatDate(dueDate)}
 
 Anda bisa bayar Invoice dengan Transfer ke:
 Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.
@@ -1083,8 +1392,10 @@ Terima kasih.`;
                 });
             });
             
-            // Cek invoice otomatis setiap kali aplikasi dimuat
-            checkAndSendAutoInvoices();
+            // Hanya cek invoice otomatis jika diaktifkan
+            if (telegramConfig.enableAutoSend) {
+                checkAndSendAutoInvoices();
+            }
             
             // Simpan konfigurasi Telegram
             document.getElementById('save-telegram-config').addEventListener('click', function() {
@@ -1100,7 +1411,7 @@ Terima kasih.`;
             
             // Test koneksi Telegram
             document.getElementById('test-telegram').addEventListener('click', function() {
-                const testMessage = `<b>Test koneksi dari WIFI KOIN AKHFI Invoice System</b>\nTanggal: ${formatDate(new Date())}`;
+                const testMessage = `<b>Test koneksi dari WIFI KOIN AKHFI Invoice System</b>\n\nTanggal: ${formatDate(new Date())}\n\nPesan ini menandakan bahwa sistem otomasi invoice berhasil terhubung dengan bot Telegram Anda.`;
                 const button = this;
                 const originalText = button.innerHTML;
                 
@@ -1137,6 +1448,7 @@ Terima kasih.`;
                 document.getElementById('client-modal-title').textContent = 'Tambah Client';
                 document.getElementById('client-form').reset();
                 document.getElementById('client-id').value = '';
+                clientStartDatePicker.setDate(new Date());
                 new bootstrap.Modal(document.getElementById('client-modal')).show();
             });
             
@@ -1153,10 +1465,14 @@ Terima kasih.`;
                     return;
                 }
                 
+                // Cari harga produk berdasarkan nama paket
+                const product = products.find(p => p.name === package);
+                const price = product ? product.price : 0;
+                
                 if (id) {
                     const index = clients.findIndex(client => client.id === id);
                     if (index !== -1) {
-                        clients[index] = { ...clients[index], name, phone, package, startDate };
+                        clients[index] = { ...clients[index], name, phone, package, startDate, price };
                     }
                 } else {
                     clients.push({
@@ -1165,7 +1481,7 @@ Terima kasih.`;
                         phone,
                         package,
                         startDate,
-                        price: 0
+                        price
                     });
                 }
                 
@@ -1399,47 +1715,56 @@ Terima kasih.`;
                 
                 const invoiceContent = document.getElementById('invoice-content');
                 invoiceContent.innerHTML = `
-                    <p>Halo Bapak/Ibu ${client.name},</p>
-                    <p>WIFI KOIN AKHFI telah mengirimkan tagihan untuk Anda, dengan rincian sebagai berikut:</p>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>Pengirim Invoice</td>
-                            <td>AI WIFI KOIN AKHFI</td>
-                        </tr>
-                        <tr>
-                            <td>Nomor Invoice</td>
-                            <td>${document.getElementById('invoice-number').value}</td>
-                        </tr>
-                        <tr>
-                            <td>Tanggal</td>
-                            <td>${document.getElementById('invoice-date').value}</td>
-                        </tr>
-                        <tr>
-                            <td>Nominal</td>
-                            <td>${formatCurrency(total)}</td>
-                        </tr>
-                        <tr>
-                            <td>Item</td>
-                            <td>${product.name}</td>
-                        </tr>
-                        <tr>
-                            <td>Periode</td>
-                            <td>${period} Bulan</td>
-                        </tr>
-                        <tr>
-                            <td>Jatuh Tempo</td>
-                            <td>${dueDate}</td>
-                        </tr>
-                    </table>
-                    <p>Anda bisa bayar Invoice dengan Transfer ke:<br>
-                    Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.<br>
-                    Atau TopUp DANA ke Nomor : 085934241038 a/n AHYAR ROSIDI.</p>
-                    <p>Jika ada pertanyaan lebih lanjut, silakan menghubungi WIFI KOIN AKHFI di:</p>
-                    <p>Email: akhyar.fitria@gmail.com<br>
-                    No. Telp: 082339113376</p>
-                    <p>Terima kasih.</p>
+                    <div class="invoice-details">
+                        <p>Halo Bapak/Ibu <strong>${client.name}</strong>,</p>
+                        <p>WIFI KOIN AKHFI telah mengirimkan tagihan untuk Anda, dengan rincian sebagai berikut:</p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="30%">Pengirim Invoice</td>
+                                <td>AI WIFI KOIN AKHFI</td>
+                            </tr>
+                            <tr>
+                                <td>Nomor Invoice</td>
+                                <td><strong>${document.getElementById('invoice-number').value}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal</td>
+                                <td>${document.getElementById('invoice-date').value}</td>
+                            </tr>
+                            <tr>
+                                <td>Nominal</td>
+                                <td><strong>${formatCurrency(total)}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Item</td>
+                                <td>${product.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Periode</td>
+                                <td>${period} Bulan</td>
+                            </tr>
+                            <tr>
+                                <td>Jatuh Tempo</td>
+                                <td><strong>${dueDate}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="payment-info">
+                        <h6 class="fw-bold">Cara Pembayaran:</h6>
+                        <p>Anda bisa bayar Invoice dengan Transfer ke:<br>
+                        <strong>Bank Mandiri 1610081133766 a/n AHYAR ROSIDI.</strong><br>
+                        Atau TopUp DANA ke Nomor : <strong>085934241038 a/n AHYAR ROSIDI.</strong></p>
+                        
+                        <p>Jika ada pertanyaan lebih lanjut, silakan menghubungi WIFI KOIN AKHFI di:</p>
+                        <p>Email: <strong>akhyar.fitria@gmail.com</strong><br>
+                        No. Telp: <strong>082339113376</strong></p>
+                    </div>
+                    <div class="mt-4 pt-3 border-top text-center">
+                        <p class="text-muted">Terima kasih atas kepercayaan Anda menggunakan layanan WIFI KOIN AKHFI.</p>
+                    </div>
                 `;
                 
+                document.getElementById('preview-invoice-number').textContent = document.getElementById('invoice-number').value;
                 document.getElementById('invoice-preview').classList.remove('d-none');
                 
                 window.currentInvoice = {
@@ -1499,6 +1824,11 @@ Terima kasih.`;
                         alert('Invoice berhasil dikirim ke Telegram!');
                         addAutomationLog(client.name, 'Berhasil', 'Invoice manual dikirim ke Telegram');
                         showAutomationStatus('Invoice berhasil dikirim ke Telegram!', 'active');
+                        
+                        // Update nomor invoice
+                        invoiceCounter++;
+                        localStorage.setItem('invoiceCounter', invoiceCounter.toString());
+                        document.getElementById('invoice-number').value = `INV/${new Date().getFullYear()}/${invoiceCounter.toString().padStart(4, '0')}`;
                     },
                     function(error) {
                         button.innerHTML = originalText;
