@@ -18,31 +18,36 @@
             --warning-color: #f39c12;
         }
         
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             min-height: 100vh;
+            padding-bottom: 60px;
         }
         
         .navbar-brand {
             font-weight: bold;
             color: white !important;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
         
         .card {
             border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
             border: none;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
         }
         
         .card-header {
@@ -50,7 +55,7 @@
             color: white;
             border-radius: 0 !important;
             font-weight: bold;
-            padding: 15px 20px;
+            padding: 12px 15px;
             border-bottom: none;
         }
         
@@ -59,7 +64,7 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            padding: 10px 20px;
+            padding: 8px 16px;
             transition: all 0.3s ease;
         }
         
@@ -73,7 +78,7 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            padding: 10px 20px;
+            padding: 8px 16px;
             transition: all 0.3s ease;
         }
         
@@ -87,7 +92,7 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            padding: 10px 20px;
+            padding: 8px 16px;
             transition: all 0.3s ease;
         }
         
@@ -99,7 +104,7 @@
         .table-responsive {
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
         
         .table th {
@@ -107,13 +112,15 @@
             color: white;
             font-weight: 600;
             border: none;
-            padding: 12px 15px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
         }
         
         .table td {
-            padding: 12px 15px;
+            padding: 10px 12px;
             vertical-align: middle;
             border-color: #f1f1f1;
+            font-size: 0.85rem;
         }
         
         .table-striped tbody tr:nth-of-type(odd) {
@@ -141,31 +148,33 @@
         .invoice-preview {
             background-color: white;
             border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             border: 1px solid #e1e5e9;
         }
         
         .invoice-header {
             border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 20px;
-            margin-bottom: 25px;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
         
         .invoice-title {
             color: var(--primary-color);
             font-weight: 700;
             margin: 0;
+            font-size: 1.3rem;
         }
         
         .invoice-details {
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
         
         .whatsapp-btn {
@@ -174,7 +183,7 @@
             color: white;
             border-radius: 8px;
             font-weight: 600;
-            padding: 10px 20px;
+            padding: 8px 16px;
             transition: all 0.3s ease;
         }
         
@@ -190,7 +199,7 @@
             color: white;
             border-radius: 8px;
             font-weight: 600;
-            padding: 10px 20px;
+            padding: 8px 16px;
             transition: all 0.3s ease;
         }
         
@@ -200,34 +209,40 @@
             color: white;
         }
         
+        .action-buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 5px;
+        }
+        
         .action-buttons .btn {
-            margin-right: 5px;
-            margin-bottom: 5px;
-            border-radius: 6px;
+            margin: 0;
+            padding: 5px 8px;
+            font-size: 0.8rem;
         }
         
         .report-summary {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         
         .summary-item {
             text-align: center;
-            padding: 15px;
+            padding: 10px;
         }
         
         .summary-item h3 {
-            font-size: 2.2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 5px;
         }
         
         .summary-item p {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             opacity: 0.9;
             margin: 0;
         }
@@ -248,37 +263,18 @@
         
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--secondary-color);
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--secondary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-right: 10px;
+            margin-right: 8px;
         }
         
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-        
-        @media (max-width: 768px) {
-            .card-body {
-                padding: 15px;
-            }
-            
-            .table-responsive {
-                font-size: 0.9rem;
-            }
-            
-            .action-buttons .btn {
-                font-size: 0.8rem;
-                padding: 5px 10px;
-            }
-            
-            .summary-item h3 {
-                font-size: 1.8rem;
-            }
         }
         
         .log-error {
@@ -294,9 +290,9 @@
         }
         
         .status-badge {
-            padding: 6px 12px;
+            padding: 4px 8px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: bold;
         }
         
@@ -316,10 +312,10 @@
         }
         
         .automation-status {
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
         
         .automation-active {
@@ -336,9 +332,10 @@
         
         .form-control, .form-select {
             border-radius: 8px;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border: 1px solid #e1e5e9;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
         .form-control:focus, .form-select:focus {
@@ -349,7 +346,7 @@
         .modal-content {
             border-radius: 12px;
             border: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
         
         .modal-header {
@@ -357,26 +354,27 @@
             color: white;
             border-radius: 12px 12px 0 0;
             border-bottom: none;
-            padding: 20px;
+            padding: 15px;
         }
         
         .modal-title {
             font-weight: 600;
+            font-size: 1.1rem;
         }
         
         .modal-footer {
             border-top: 1px solid #e1e5e9;
-            padding: 20px;
+            padding: 15px;
         }
         
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .logo-icon {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: white;
         }
         
@@ -385,27 +383,28 @@
             font-weight: 700;
             margin-bottom: 10px;
             border-left: 5px solid var(--secondary-color);
-            padding-left: 15px;
+            padding-left: 12px;
+            font-size: 1.3rem;
         }
         
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 15px;
             color: #6c757d;
         }
         
         .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            margin-bottom: 15px;
             color: #dee2e6;
         }
         
         .client-status {
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            margin-right: 8px;
+            margin-right: 6px;
         }
         
         .status-active {
@@ -424,12 +423,201 @@
             background: linear-gradient(135deg, #f39c12, #e67e22);
             color: white;
         }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            
+            .card-body {
+                padding: 15px;
+            }
+            
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+            
+            .action-buttons .btn {
+                font-size: 0.75rem;
+                padding: 4px 6px;
+            }
+            
+            .summary-item h3 {
+                font-size: 1.2rem;
+            }
+            
+            .page-title {
+                font-size: 1.1rem;
+            }
+            
+            .invoice-title {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+            
+            .modal-dialog {
+                margin: 10px;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .table th, .table td {
+                padding: 8px 10px;
+            }
+            
+            .card-header {
+                padding: 10px 12px;
+            }
+            
+            .report-summary {
+                padding: 15px;
+            }
+            
+            .invoice-preview {
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 5px;
+            }
+            
+            .table-responsive {
+                font-size: 0.75rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 3px;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .summary-item {
+                padding: 5px;
+            }
+            
+            .summary-item h3 {
+                font-size: 1rem;
+            }
+            
+            .summary-item p {
+                font-size: 0.7rem;
+            }
+            
+            .btn-group-vertical {
+                width: 100%;
+            }
+            
+            .btn-group-vertical .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .invoice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .invoice-number-badge {
+                margin-top: 10px;
+            }
+            
+            .navbar-collapse {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                padding: 10px;
+                border-radius: 0 0 10px 10px;
+            }
+        }
+        
+        /* Fix untuk tabel di mobile */
+        .table-mobile-view {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        
+        /* Sticky header untuk tabel di mobile */
+        @media (max-width: 768px) {
+            .table thead {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+        }
+        
+        /* Menu navigasi mobile friendly */
+        .navbar-toggler {
+            border: none;
+            padding: 5px 8px;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        /* Mobile bottom navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-bottom-nav {
+                display: flex;
+            }
+            
+            .mobile-nav-item {
+                flex: 1;
+                text-align: center;
+                padding: 10px 5px;
+                color: #6c757d;
+                text-decoration: none;
+                font-size: 0.7rem;
+            }
+            
+            .mobile-nav-item.active {
+                color: var(--secondary-color);
+            }
+            
+            .mobile-nav-item i {
+                display: block;
+                font-size: 1.2rem;
+                margin-bottom: 3px;
+            }
+            
+            body {
+                padding-bottom: 70px;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
-        <div class="container">
+        <div class="container-fluid">
             <div class="logo-container">
                 <i class="fas fa-wifi logo-icon"></i>
                 <a class="navbar-brand" href="#">
@@ -443,27 +631,27 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link active menu-link" href="#" data-target="client-section">
-                            <i class="fas fa-users me-1"></i> Client
+                            <i class="fas fa-users me-1"></i> <span class="d-none d-md-inline">Client</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="product-section">
-                            <i class="fas fa-box me-1"></i> Produk
+                            <i class="fas fa-box me-1"></i> <span class="d-none d-md-inline">Produk</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="invoice-section">
-                            <i class="fas fa-file-invoice me-1"></i> Buat Invoice
+                            <i class="fas fa-file-invoice me-1"></i> <span class="d-none d-md-inline">Invoice</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="report-section">
-                            <i class="fas fa-chart-bar me-1"></i> Laporan
+                            <i class="fas fa-chart-bar me-1"></i> <span class="d-none d-md-inline">Laporan</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#" data-target="automation-section">
-                            <i class="fas fa-robot me-1"></i> Otomasi
+                            <i class="fas fa-robot me-1"></i> <span class="d-none d-md-inline">Otomasi</span>
                         </a>
                     </li>
                 </ul>
@@ -471,7 +659,31 @@
         </div>
     </nav>
 
-    <div class="container mt-4 mb-5">
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="#" class="mobile-nav-item active" data-target="client-section">
+            <i class="fas fa-users"></i>
+            <span>Client</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-target="product-section">
+            <i class="fas fa-box"></i>
+            <span>Produk</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-target="invoice-section">
+            <i class="fas fa-file-invoice"></i>
+            <span>Invoice</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-target="report-section">
+            <i class="fas fa-chart-bar"></i>
+            <span>Laporan</span>
+        </a>
+        <a href="#" class="mobile-nav-item" data-target="automation-section">
+            <i class="fas fa-robot"></i>
+            <span>Otomasi</span>
+        </a>
+    </div>
+
+    <div class="container mt-3 mb-5">
         <!-- Status Otomasi -->
         <div id="automation-status" class="automation-status d-none">
             <!-- Status akan ditampilkan di sini -->
@@ -481,28 +693,30 @@
         <section id="client-section" class="section active">
             <h2 class="page-title"><i class="fas fa-users me-2"></i>Manajemen Client</h2>
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                     <span>Daftar Client</span>
-                    <div>
-                        <button class="btn btn-sm btn-light me-2" id="backup-clients">
-                            <i class="fas fa-download"></i> Backup
-                        </button>
-                        <button class="btn btn-sm btn-light me-2" id="restore-clients">
-                            <i class="fas fa-upload"></i> Restore
-                        </button>
-                        <button class="btn btn-sm btn-success" id="add-client-btn">
-                            <i class="fas fa-plus"></i> Tambah Client
-                        </button>
+                    <div class="mt-2 mt-md-0">
+                        <div class="btn-group-vertical btn-group-sm" role="group">
+                            <button class="btn btn-light mb-1" id="backup-clients">
+                                <i class="fas fa-download"></i> Backup
+                            </button>
+                            <button class="btn btn-light mb-1" id="restore-clients">
+                                <i class="fas fa-upload"></i> Restore
+                            </button>
+                            <button class="btn btn-success" id="add-client-btn">
+                                <i class="fas fa-plus"></i> Tambah Client
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive table-mobile-view">
                         <table class="table table-striped table-hover" id="clients-table">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Nomor WhatsApp</th>
+                                    <th>WhatsApp</th>
                                     <th>Tanggal Mulai</th>
                                     <th>Paket</th>
                                     <th>Status</th>
@@ -522,22 +736,24 @@
         <section id="product-section" class="section">
             <h2 class="page-title"><i class="fas fa-box me-2"></i>Manajemen Produk</h2>
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                     <span>Daftar Produk</span>
-                    <div>
-                        <button class="btn btn-sm btn-light me-2" id="backup-products">
-                            <i class="fas fa-download"></i> Backup
-                        </button>
-                        <button class="btn btn-sm btn-light me-2" id="restore-products">
-                            <i class="fas fa-upload"></i> Restore
-                        </button>
-                        <button class="btn btn-sm btn-success" id="add-product-btn">
-                            <i class="fas fa-plus"></i> Tambah Produk
-                        </button>
+                    <div class="mt-2 mt-md-0">
+                        <div class="btn-group-vertical btn-group-sm" role="group">
+                            <button class="btn btn-light mb-1" id="backup-products">
+                                <i class="fas fa-download"></i> Backup
+                            </button>
+                            <button class="btn btn-light mb-1" id="restore-products">
+                                <i class="fas fa-upload"></i> Restore
+                            </button>
+                            <button class="btn btn-success" id="add-product-btn">
+                                <i class="fas fa-plus"></i> Tambah Produk
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive table-mobile-view">
                         <table class="table table-striped table-hover" id="products-table">
                             <thead>
                                 <tr>
@@ -566,7 +782,7 @@
                 <div class="card-body">
                     <form id="invoice-form">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3 mb-md-0">
                                 <label for="invoice-number" class="form-label">Nomor Invoice</label>
                                 <input type="text" class="form-control" id="invoice-number" readonly>
                             </div>
@@ -577,7 +793,7 @@
                         </div>
                         
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3 mb-md-0">
                                 <label for="due-date" class="form-label">Jatuh Tempo</label>
                                 <input type="text" class="form-control" id="due-date" placeholder="Pilih tanggal">
                             </div>
@@ -595,7 +811,7 @@
                         </div>
                         
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3 mb-md-0">
                                 <label for="client-select" class="form-label">Pilih Client</label>
                                 <select class="form-select" id="client-select">
                                     <option value="">-- Pilih Client --</option>
@@ -609,7 +825,7 @@
                             </div>
                         </div>
                         
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <div class="d-grid">
                             <button type="button" class="btn btn-primary" id="preview-invoice">
                                 <i class="fas fa-eye me-2"></i> Preview Invoice
                             </button>
@@ -628,7 +844,7 @@
                             <!-- Konten invoice akan dimuat di sini -->
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <button type="button" class="btn telegram-btn me-2" id="send-telegram">
+                            <button type="button" class="btn telegram-btn me-2 mb-2 mb-md-0" id="send-telegram">
                                 <i class="fab fa-telegram me-2"></i> Kirim ke Telegram
                             </button>
                             <button type="button" class="btn whatsapp-btn" id="send-whatsapp">
@@ -644,10 +860,10 @@
         <section id="report-section" class="section">
             <h2 class="page-title"><i class="fas fa-chart-bar me-2"></i>Laporan & Analitik</h2>
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                     <span>Ringkasan Laporan</span>
-                    <div>
-                        <button class="btn btn-sm btn-light" id="export-report">
+                    <div class="mt-2 mt-md-0">
+                        <button class="btn btn-light btn-sm" id="export-report">
                             <i class="fas fa-file-export me-2"></i> Export Laporan
                         </button>
                     </div>
@@ -655,25 +871,25 @@
                 <div class="card-body">
                     <div class="report-summary">
                         <div class="row text-center">
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-3">
                                 <div class="summary-item">
                                     <h3 id="total-clients">0</h3>
                                     <p>Total Client</p>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-3">
                                 <div class="summary-item">
                                     <h3 id="total-products">0</h3>
                                     <p>Total Produk</p>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-3">
                                 <div class="summary-item">
                                     <h3 id="total-revenue">Rp 0</h3>
-                                    <p>Pendapatan Bulan Ini</p>
+                                    <p>Pendapatan</p>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-3">
                                 <div class="summary-item">
                                     <h3 id="pending-invoices">0</h3>
                                     <p>Invoice Tertunda</p>
@@ -682,7 +898,7 @@
                         </div>
                     </div>
                     
-                    <div class="table-responsive mt-4">
+                    <div class="table-responsive table-mobile-view mt-4">
                         <table class="table table-striped table-hover" id="reports-table">
                             <thead>
                                 <tr>
@@ -718,7 +934,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-4 mb-md-0">
                             <div class="card h-100">
                                 <div class="card-header bg-success text-white">
                                     <i class="fas fa-cog me-2"></i> Konfigurasi Telegram
@@ -756,7 +972,7 @@
                                         </label>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-primary me-2" id="test-telegram">
+                                        <button class="btn btn-primary me-2 mb-2" id="test-telegram">
                                             <i class="fab fa-telegram me-2"></i> Test Telegram
                                         </button>
                                         <button class="btn btn-info" id="check-auto-invoices">
@@ -770,7 +986,7 @@
                     
                     <div class="mt-4">
                         <h5><i class="fas fa-history me-2"></i>Log Aktivitas Otomasi</h5>
-                        <div class="table-responsive">
+                        <div class="table-responsive table-mobile-view">
                             <table class="table table-sm table-striped">
                                 <thead>
                                     <tr>
@@ -931,28 +1147,7 @@
         };
         
         // Inisialisasi Flatpickr
-        flatpickr.localize(flatpickr.l10ns.id);
-        const dueDatePicker = flatpickr("#due-date", {
-            dateFormat: "d M Y",
-            minDate: "today"
-        });
-        
-        const clientStartDatePicker = flatpickr("#client-start-date", {
-            dateFormat: "d M Y",
-            defaultDate: "today"
-        });
-        
-        // Set tanggal hari ini
-        document.getElementById('invoice-date').value = formatDate(new Date());
-        
-        // Set nomor invoice
-        document.getElementById('invoice-number').value = `INV/${new Date().getFullYear()}/${invoiceCounter.toString().padStart(4, '0')}`;
-        
-        // Set konfigurasi Telegram
-        document.getElementById('telegram-bot-token').value = telegramConfig.botToken;
-        document.getElementById('telegram-chat-id').value = telegramConfig.chatId;
-        document.getElementById('auto-send-days').value = telegramConfig.autoSendDays;
-        document.getElementById('enable-auto-send').checked = telegramConfig.enableAutoSend;
+        let dueDatePicker, clientStartDatePicker;
         
         // Format tanggal
         function formatDate(date) {
@@ -1121,6 +1316,11 @@
                         document.getElementById('client-package').value = client.package;
                         document.getElementById('client-start-date').value = client.startDate;
                         
+                        // Perbarui flatpickr dengan tanggal client
+                        if (clientStartDatePicker) {
+                            clientStartDatePicker.setDate(parseDate(client.startDate));
+                        }
+                        
                         new bootstrap.Modal(document.getElementById('client-modal')).show();
                     }
                 });
@@ -1184,8 +1384,44 @@
                 productsList.appendChild(row);
             });
             
+            // Pasang event listener untuk edit dan hapus produk
+            attachProductEventListeners();
+            
             updateProductSelect();
             updateReports();
+        }
+        
+        // Pasang event listener untuk edit dan hapus produk
+        function attachProductEventListeners() {
+            // Edit produk
+            document.querySelectorAll('.edit-product').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const product = products.find(p => p.id === id);
+                    
+                    if (product) {
+                        document.getElementById('product-modal-title').textContent = 'Edit Produk';
+                        document.getElementById('product-id').value = product.id;
+                        document.getElementById('product-name').value = product.name;
+                        document.getElementById('product-price').value = product.price;
+                        
+                        new bootstrap.Modal(document.getElementById('product-modal')).show();
+                    }
+                });
+            });
+            
+            // Hapus produk
+            document.querySelectorAll('.delete-product').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    
+                    if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+                        products = products.filter(product => product.id !== id);
+                        localStorage.setItem('products', JSON.stringify(products));
+                        renderProducts();
+                    }
+                });
+            });
         }
         
         // Update dropdown client
@@ -1447,21 +1683,65 @@ Terima kasih.`;
             
             document.getElementById(sectionId).classList.add('active');
             
+            // Update menu navigasi desktop
             document.querySelectorAll('.menu-link').forEach(link => {
                 link.classList.remove('active');
             });
             
             document.querySelector(`.menu-link[data-target="${sectionId}"]`).classList.add('active');
+            
+            // Update menu navigasi mobile
+            document.querySelectorAll('.mobile-nav-item').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelector(`.mobile-nav-item[data-target="${sectionId}"]`).classList.add('active');
+            
+            // Scroll ke atas
+            window.scrollTo(0, 0);
         }
         
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi Flatpickr setelah DOM siap
+            flatpickr.localize(flatpickr.l10ns.id);
+            dueDatePicker = flatpickr("#due-date", {
+                dateFormat: "d M Y",
+                minDate: "today"
+            });
+            
+            clientStartDatePicker = flatpickr("#client-start-date", {
+                dateFormat: "d M Y",
+                defaultDate: "today"
+            });
+            
+            // Set tanggal hari ini
+            document.getElementById('invoice-date').value = formatDate(new Date());
+            
+            // Set nomor invoice
+            document.getElementById('invoice-number').value = `INV/${new Date().getFullYear()}/${invoiceCounter.toString().padStart(4, '0')}`;
+            
+            // Set konfigurasi Telegram
+            document.getElementById('telegram-bot-token').value = telegramConfig.botToken;
+            document.getElementById('telegram-chat-id').value = telegramConfig.chatId;
+            document.getElementById('auto-send-days').value = telegramConfig.autoSendDays;
+            document.getElementById('enable-auto-send').checked = telegramConfig.enableAutoSend;
+            
             renderClients();
             renderProducts();
             renderAutomationLog();
             
-            // Navigasi menu
+            // Navigasi menu desktop
             document.querySelectorAll('.menu-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('data-target');
+                    showSection(target);
+                });
+            });
+            
+            // Navigasi menu mobile
+            document.querySelectorAll('.mobile-nav-item').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const target = this.getAttribute('data-target');
@@ -1565,35 +1845,6 @@ Terima kasih.`;
                 localStorage.setItem('clients', JSON.stringify(clients));
                 renderClients();
                 bootstrap.Modal.getInstance(document.getElementById('client-modal')).hide();
-            });
-            
-            // Edit produk
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('edit-product') || e.target.parentElement.classList.contains('edit-product')) {
-                    const button = e.target.classList.contains('edit-product') ? e.target : e.target.parentElement;
-                    const id = button.getAttribute('data-id');
-                    const product = products.find(p => p.id === id);
-                    
-                    if (product) {
-                        document.getElementById('product-modal-title').textContent = 'Edit Produk';
-                        document.getElementById('product-id').value = product.id;
-                        document.getElementById('product-name').value = product.name;
-                        document.getElementById('product-price').value = product.price;
-                        
-                        new bootstrap.Modal(document.getElementById('product-modal')).show();
-                    }
-                }
-                
-                if (e.target.classList.contains('delete-product') || e.target.parentElement.classList.contains('delete-product')) {
-                    const button = e.target.classList.contains('delete-product') ? e.target : e.target.parentElement;
-                    const id = button.getAttribute('data-id');
-                    
-                    if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
-                        products = products.filter(product => product.id !== id);
-                        localStorage.setItem('products', JSON.stringify(products));
-                        renderProducts();
-                    }
-                }
             });
             
             // Tambah produk
@@ -1894,6 +2145,11 @@ Terima kasih.`;
                 }
                 
                 const { client, product, period, total, invoiceNumber, invoiceDate, dueDate } = window.currentInvoice;
+                
+                if (!client.phone) {
+                    alert('Client tidak memiliki nomor WhatsApp!');
+                    return;
+                }
                 
                 const message = `Halo Bapak/Ibu ${client.name},
 
